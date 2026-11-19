@@ -1,0 +1,14 @@
+{
+  "iso_path": "C:/ISO/WindowsServer2022.iso",
+  "iso_checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "image_name": "COPY EXACT IMAGE NAME FROM APPROVED MEDIA",
+  "edition": "Datacenter",
+  "installation_type": "Desktop",
+  "switch_name": "IsolatedImageBuild",
+  "winrm_allowed_address": "192.0.2.10/32",
+  "image_version": "2026.11.1",
+  "cpus": 4,
+  "memory_mb": 4096,
+  "disk_size_mb": 81920,
+  "approved_oob_packages": []
+}

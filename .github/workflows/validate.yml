@@ -1,0 +1,64 @@
+name: Validate
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: factory
+      - uses: actions/checkout@v4
+        with:
+          repository: larskroghdk/packer-plugin-windows-features
+          ref: 891876d5b29fc5b7efc969747a1e55d1019369a2
+          path: packer-plugin-windows-features
+      - uses: actions/checkout@v4
+        with:
+          repository: larskroghdk/packer-plugin-windows-optimize
+          ref: 0f5670039db6ff64b9f157ffd4ec9fb7ed2344c3
+          path: packer-plugin-windows-optimize
+      - uses: actions/checkout@v4
+        with:
+          repository: larskroghdk/packer-plugin-windows-harden
+          ref: 8dc70d2c81be4515ad243dfbe288d61151ab722d
+          path: packer-plugin-windows-harden
+      - uses: actions/checkout@v4
+        with:
+          repository: larskroghdk/packer-plugin-windows-cleanup
+          ref: 862156428506ce6a8d679a28bc18a39882c46c0f
+          path: packer-plugin-windows-cleanup
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+          cache: false
+      - uses: hashicorp/setup-packer@v3
+        with:
+          version: '1.16.2'
+      - name: Build verified local plugin interfaces
+        shell: pwsh
+        working-directory: factory
+        run: |
+          ./scripts/Install-LocalPlugins.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE
+          "PACKER_PLUGIN_PATH=$pwd/.validation/plugins" >> $env:GITHUB_ENV
+      - name: Validate six configurations and negative cases
+        shell: pwsh
+        working-directory: factory
+        run: |
+          New-Item -ItemType Directory reports -Force | Out-Null
+          ./tests/static/Test-Project.ps1 *>&1 | Tee-Object reports/static-validation.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: static-validation
+          path: |
+            factory/reports/
+            factory/.validation/plugin-provenance.json
+          if-no-files-found: warn
+          retention-days: 14

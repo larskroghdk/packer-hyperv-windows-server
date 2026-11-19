@@ -1,0 +1,68 @@
+name: Live Hyper-V build
+on:
+  workflow_dispatch:
+    inputs:
+      server_version:
+        type: choice
+        options: ['2019', '2022', '2025']
+        required: true
+      settings_path:
+        description: Absolute path to approved settings JSON on the dedicated runner
+        type: string
+        required: true
+      authorize_live_build:
+        description: Authorize creation and disposal of an isolated build VM
+        type: boolean
+        default: false
+      external_storage:
+        description: Optional existing mounted storage directory for verified VHDX copies
+        type: string
+        required: false
+      upload_vhdx:
+        description: Upload the VHDX to GitHub artifacts (prefer external storage for large disks)
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: hyperv-factory-live
+  cancel-in-progress: false
+jobs:
+  build:
+    if: ${{ inputs.authorize_live_build && github.ref == 'refs/heads/main' }}
+    environment: hyperv-build
+    runs-on: [self-hosted, Windows, X64, hyperv-image-factory]
+    timeout-minutes: 720
+    defaults:
+      run:
+        shell: powershell
+    env:
+      FACTORY_VERSION: ${{ inputs.server_version }}
+      FACTORY_SETTINGS: ${{ inputs.settings_path }}
+      FACTORY_STORAGE: ${{ inputs.external_storage }}
+      PKR_VAR_administrator_password: ${{ secrets.PACKER_ADMINISTRATOR_PASSWORD }}
+      PACKER_PLUGIN_PATH: ${{ vars.PACKER_PLUGIN_PATH }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-packer@v3
+        with:
+          version: '1.16.2'
+      - name: Build and verify the generalized image
+        run: ./tests/live/Test-Build.ps1 -Version $env:FACTORY_VERSION -SettingsPath $env:FACTORY_SETTINGS -AuthorizeLiveBuild -ExternalStorage $env:FACTORY_STORAGE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-server-${{ inputs.server_version }}-${{ github.run_id }}-reports
+          path: |
+            reports/
+            .validation/plugin-provenance.json
+          retention-days: 30
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        if: ${{ success() && inputs.upload_vhdx }}
+        with:
+          name: windows-server-${{ inputs.server_version }}-${{ github.run_id }}-vhdx
+          path: output/**/*.vhdx
+          compression-level: 0
+          retention-days: 7
+          if-no-files-found: error

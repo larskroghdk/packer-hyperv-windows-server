@@ -1,0 +1,11 @@
+.validation/
+.build/
+output/
+reports/
+packer_cache/
+*.iso
+*.vhdx
+*.vhd
+*.log
+*.auto.pkrvars.hcl
+*.secret.pkrvars.hcl

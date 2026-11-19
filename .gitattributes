@@ -1,0 +1,7 @@
+* text=auto
+*.ps1 text eol=crlf
+*.hcl text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.pkrtpl text eol=lf

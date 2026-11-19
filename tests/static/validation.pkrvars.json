@@ -1,0 +1,10 @@
+{
+  "iso_path": "C:/validation-only.iso",
+  "iso_checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "image_name": "Windows Server SERVERDATACENTERCORE",
+  "switch_name": "static-validation-only",
+  "winrm_allowed_address": "192.0.2.10/32",
+  "image_version": "0.static",
+  "build_id": "000000000001",
+  "approved_oob_packages": []
+}
