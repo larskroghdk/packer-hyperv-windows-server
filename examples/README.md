@@ -1,4 +1,4 @@
-# Configuration and command examples
+# 🧩 Configuration and command examples
 
 Run commands from the repository root. These examples contain deliberately unusable media identifiers: replace the ISO path, zero SHA256, exact image name, switch and documentation-only host IP with your approved values. Credentials belong in PKR_VAR_administrator_password, injected from your secret manager. No example authorizes a live build by itself.
 
@@ -10,7 +10,7 @@ Run commands from the repository root. These examples contain deliberately unusa
 
 Each file shows Datacenter; set edition to Standard and select its matching exact image name for Standard. Copy the selected file to a private location before editing it. The -Version argument must match the selected media release.
 
-## Validate and build
+## 🚀 Validate and build
 
 After installing the plugins as described in [the main README](../README.md):
 
@@ -34,7 +34,7 @@ $env:PACKER_PLUGIN_PATH = "$PWD/.validation/plugins"
 
 Configuration-only validation checks Packer settings. Actual ISO identity and host prerequisites are checked when -Build is requested. See [operations](../docs/operations.md) for the full qualification requirements.
 
-## Approved OOB and checkpoint packages
+## 📦 Approved OOB and checkpoint packages
 
 Use this snippet to construct the approved_oob_packages array for your private settings. Supply Microsoft-approved files and independently verified hashes, adding prerequisite packages first. Computing a hash does not establish that a download is trustworthy. Enter the actual KB identities; no fictional KB is assumed to be an available update.
 

@@ -1,4 +1,4 @@
-# Plugin interface audit
+# 🔌 Plugin interface audit
 
 Reviewed local Config structs, generated HCL2 schemas, main registration, restart logic, guest actions, docs/examples and reports on 2026-11-19. The registered component is `plugin.DEFAULT_NAME` in each custom plugin, so its HCL name is the required-plugin name without a repeated suffix. All use the builder-provided WinRM communicator and require elevated native Windows PowerShell 5.1; no second connection mechanism is introduced.
 
@@ -20,7 +20,7 @@ Optimization and hardening also run with their implemented dry_run option after 
 
 The unavailable packer-plugin-windows-update repository was not recreated and no schema was invented. The user approved the installed upstream alternative. Offline approved OOB packages are the one small servicing bridge: upload a hashed MSU, install it under SYSTEM with WUSA through a windows-restart command, and wait for reconnection before the next prerequisite. No promise is made that an OOB package appears in Windows Update.
 
-Authoritative references:
+**📚 Authoritative references:**
 
 - [Hyper-V ISO options](https://developer.hashicorp.com/packer/integrations/hashicorp/hyperv/latest/components/builder/iso) and [actual shutdown lifecycle](https://github.com/hashicorp/packer-plugin-hyperv/blob/v1.1.5/builder/hyperv/common/step_shutdown.go).
 - [HCL2 templates](https://developer.hashicorp.com/packer/docs/templates/hcl_templates), [plugins](https://developer.hashicorp.com/packer/docs/plugins), [Windows restart](https://developer.hashicorp.com/packer/docs/provisioners/windows-restart).

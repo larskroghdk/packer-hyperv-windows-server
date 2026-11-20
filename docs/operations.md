@@ -1,6 +1,6 @@
-# Operations
+# 📘 Operations
 
-## Media, configuration and secrets
+## 🔐 Media, configuration and secrets
 
 Obtain English x64 Server 2019/2022/2025 media from Microsoft licensing/subscription or Evaluation Center channels and independently approve its SHA256. A matching hash establishes the approved file identity; it does not establish provenance if the expected hash came from an untrusted download. Evaluation licensing/expiry and activation remain operator responsibilities. This factory does not distribute ISO media or license keys. Use volume/evaluation media that permits edition selection without an interactive product-key prompt; qualify other channels with Windows SIM first.
 
@@ -12,7 +12,7 @@ The generated answer CD necessarily contains the temporary administrator passwor
 
 Unattend creates an EFI partition, MSR and Windows partition. There is no dedicated WinRE recovery partition; these are server VM base images and recovery is provided by redeployment/backups. Qualify a separate recovery layout if your deployment policy requires one. Extra disks and domain-controller images are outside this factory's scope.
 
-## Servicing and hardening
+## 🛡️ Servicing and hardening
 
 PowerShell-V2 removal skips unavailable features; final validation checks absence/disabled state and preserves PowerShell 5.1. .NET 3.5 installs only from sources/sxs staged from the same verified ISO. netfx_source chooses its staging subdirectory within the cleanup plugin's approved staging root; bootstrap, feature installation and cleanup use the same configured path. Features and optimization verify their own post-reboot state. Hardening uses a Microsoft baseline implementation in compatibility mode, which may defer connectivity-breaking controls. Review deferred_plan and baseline exclusions before approving an image for a workload. This is not a complete baseline-compliance assertion.
 
@@ -22,7 +22,7 @@ For an OOB release, place approved MSUs on the host and set approved_oob_package
 
 The online update provisioner owns its install/reboot/rescan loop. Its retry count handles failures; successful cycles are bounded by update_timeout (default six hours). The outer workflow has a twelve-hour cap. Feature restarts and reconnects have their own limits. The extra post-update windows-restart drains servicing before cleanup. Read-only optimization/hardening plugin passes then verify that servicing did not undo the selected settings; failed/pending results block release. Cleanup performs supported component cleanup, retains servicing/event diagnostics and does not ResetBase. A residual pending reboot after cleanup/final scan fails validation rather than starting an unbounded loop.
 
-## Generalization and deployment
+## 📦 Generalization and deployment
 
 Final guest validation records features, QFE updates, DISM packages, update history, a fresh applicability search, component-store health, Secure Boot/GPT and reboot state. Cleanup removes cached unattend files and explicitly listed staging/Temp artifacts. The finalizer is staged last; the Hyper-V shutdown_command schedules a delayed SYSTEM worker and returns while connectivity is still present. That worker closes temporary access, invalidates the build password, removes its own staging/task, and invokes Sysprep /generalize /oobe /shutdown. Failure writes generalization-error.txt and deliberately does not shut down.
 
@@ -30,7 +30,7 @@ The builder waits for power-off without waiting for a provisioner to survive Win
 
 Deploy from a copy of the generalized VHDX with a separate consumer unattend process that establishes the administrator password, identity, network and management certificate/listeners. The base image deliberately retains no build management listener. Do not boot the canonical artifact. Preserve Sysprep/CBS/DISM diagnostics for troubleshooting.
 
-## Validation and release qualification
+## 🧪 Validation and release qualification
 
 Run tests/static/Test-Project.ps1 for AST parsing, XML parsing/credential escaping, pipeline invariants, documentation links, plugin discovery, init/fmt, six schema validations and rejected invalid variables. Static fixtures use a reserved documentation address, fake checksum/media path and a public non-production credential. They never create VMs and do not test real installation media.
 
@@ -48,7 +48,7 @@ Run tests/live/Test-Build.ps1 -Version 2022 -SettingsPath C:/Private/ws2022.json
 
 On failure, inspect reports/packer.log, the relevant plugin report and guest Panther/CBS/DISM logs if accessible. Packer disposes its own failed VM by default; reproduce on a disposable host with an approved diagnostics plan if guest logs must be recovered. Never retry servicing blindly while a prior servicing task may still be active. The wrapper refuses existing output paths and VM names and never forces replacement. No live tests ran during implementation.
 
-## CI and storage
+## 🗄️ CI and storage
 
 validate.yml runs on hosted Windows for pushes/PRs, builds the four plugins from audited commit pins, runs static checks and uploads evidence. Source repositories/commits must be reachable by the checkout token. No live host or build secret is exposed to pull requests. Update pins through reviewed changes; do not treat local development binaries as signed releases.
 

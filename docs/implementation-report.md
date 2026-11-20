@@ -1,8 +1,8 @@
-# Implementation report
+# 📋 Implementation report
 
 Implementation date: 2026-11-19. Repository: packer-hyperv-windows-server.
 
-## Delivered
+## 🛠️ Delivered
 
 Shared HCL2 source/build logic, three release variable files, configurable Standard/Datacenter Core/Desktop selection, Gen 2 UEFI/MicrosoftWindows Secure Boot, configurable resources/switch/timeouts, verified ISO checksums, unattend GPT setup, scoped HTTPS/NTLM bootstrap, feature payload staging and sensitive credentials.
 
@@ -10,7 +10,7 @@ The provisioning pipeline uses the actual four custom plugin interfaces and the 
 
 Host orchestration validates approved media/image identity and host capabilities, creates unique resources, refuses replacement, captures evidence and optionally copies verified artifacts to existing external storage. Added hosted static CI, protected manual self-hosted live CI, static/negative checks, authorized live-test entrypoint and consistent Codex/Claude/Copilot guidance.
 
-## Verification
+## 🧪 Verification
 
 - Packer 1.16.2 on Windows; Hyper-V plugin 1.1.5 and update plugin 0.18.4 downloaded through init.
 - Compiled all four custom plugins from their existing clean source trees into an ignored workspace directory. Registered them through the supported packer plugins install --path mechanism. Source repositories were not edited.
@@ -20,7 +20,7 @@ Host orchestration validates approved media/image identity and host capabilities
 - The configuration-only Build.ps1 entrypoint completed successfully without creating a VM. A nondefault .NET staging subdirectory passed full schema validation. Bootstrap changes to ImageFactory naming were propagated through dependent paths and cleanup rules.
 - Exact local plugin commits and installation limitations are recorded in [plugin audit](plugin-audit.md). Local provenance output is .validation/plugin-provenance.json.
 
-## Dependencies and qualification limits
+## 🚧 Dependencies and qualification limits
 
 No live VM builds, Sysprep execution, captured VHDX, real ISO validation, update-source integration or deployment smoke tests were performed. Hyper-V and oscdimg were discovered on this host, but no approved ISO/site settings/build secret or explicit live-build authorization was supplied. Static validation emitted the builder's low-memory warning. These limitations prevent describing the resulting images as production certified; the six live release/type cases remain release gates.
 

@@ -1,12 +1,12 @@
-# Windows Server template factory
+# 🏭 Windows Server template factory
 
 Shared Packer HCL2 builds Windows Server 2019, 2022 and 2025 Standard/Datacenter, Core or Desktop Experience, from approved English Microsoft ISO media. Output is a standalone generalized Generation 2 VHDX with Secure Boot, provisioning reports, a JSON manifest and SHA256.
 
-**Qualification status:** all six release/installation configurations pass Packer schema validation against real plugin binaries. No live Windows image has been built or certified in this implementation session. See [implementation results](docs/implementation-report.md) and [plugin audit](docs/plugin-audit.md).
+**🔎 Qualification status:** all six release/installation configurations pass Packer schema validation against real plugin binaries. No live Windows image has been built or certified in this implementation session. See [implementation results](docs/implementation-report.md) and [plugin audit](docs/plugin-audit.md).
 
 The update stage uses `rgl/windows-update` v0.18.4, approved in place of the unavailable custom update repository. Feature, optimization, hardening and cleanup operations use the four existing custom plugins without modifying their repositories.
 
-## Run
+## 🚀 Run
 
 See [configuration and command examples](examples/README.md) for all three releases, Core/Desktop settings, validation, live builds, external storage and approved OOB/checkpoint packages.
 
@@ -32,7 +32,7 @@ Inject `PKR_VAR_administrator_password` from your secret manager using a unique 
 
 `-Build` authorizes creation and automatic disposal of the newly named build VM. No existing VM or switch is reused or removed. The script checks ISO checksum, WIM/ESD release, edition, Core/Desktop type, architecture, English UI and .NET payload before creating a VM. Exact image names vary between evaluation, volume and other Microsoft media; inspect them with `Get-WindowsImage` rather than guessing indexes.
 
-## Pipeline and output
+## ⚙️ Pipeline and output
 
 Unattended GPT/UEFI setup → HTTPS WinRM → remove PowerShell 2 → install .NET 3.5 → optimize → harden → approved offline packages and bounded restarts → Windows Update → restart → supported cleanup → health/feature/update validation → builder-owned Sysprep → shutdown → capture → offline generalized-state validation → manifest/checksum.
 
